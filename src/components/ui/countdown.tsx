@@ -1,40 +1,50 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useCallback, useSyncExternalStore } from 'react'
 import { useTranslations } from 'next-intl'
 
 interface CountdownProps {
   targetDate?: string
 }
 
+function calcTimeLeft(targetDate: string) {
+  const diff = Math.max(0, new Date(targetDate).getTime() - Date.now())
+  return {
+    days: Math.floor(diff / (1000 * 60 * 60 * 24)),
+    hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
+    minutes: Math.floor((diff / (1000 * 60)) % 60),
+    seconds: Math.floor((diff / 1000) % 60),
+  }
+}
+
+const serverSnapshot = { days: 0, hours: 0, minutes: 0, seconds: 0 }
+
 export function Countdown({ targetDate }: CountdownProps) {
   const t = useTranslations('home.countdown')
-  const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 })
-  const [mounted, setMounted] = useState(false)
 
-  useEffect(() => {
-    setMounted(true)
-    if (!targetDate) return
+  const subscribe = useCallback(
+    (onStoreChange: () => void) => {
+      if (!targetDate) return () => {}
+      const interval = setInterval(onStoreChange, 1000)
+      return () => clearInterval(interval)
+    },
+    [targetDate]
+  )
 
-    const target = new Date(targetDate).getTime()
+  const getSnapshot = useCallback(
+    () => (targetDate ? JSON.stringify(calcTimeLeft(targetDate)) : JSON.stringify(serverSnapshot)),
+    [targetDate]
+  )
 
-    const update = () => {
-      const now = Date.now()
-      const diff = Math.max(0, target - now)
-      setTimeLeft({
-        days: Math.floor(diff / (1000 * 60 * 60 * 24)),
-        hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
-        minutes: Math.floor((diff / (1000 * 60)) % 60),
-        seconds: Math.floor((diff / 1000) % 60),
-      })
-    }
+  const getServerSnapshot = useCallback(() => JSON.stringify(serverSnapshot), [])
 
-    update()
-    const interval = setInterval(update, 1000)
-    return () => clearInterval(interval)
-  }, [targetDate])
+  const timeLeft = JSON.parse(
+    useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot)
+  ) as { days: number; hours: number; minutes: number; seconds: number }
 
-  if (!mounted || !targetDate) return null
+  if (!targetDate || (timeLeft.days === 0 && timeLeft.hours === 0 && timeLeft.minutes === 0 && timeLeft.seconds === 0)) {
+    return null
+  }
 
   const units = [
     { value: timeLeft.days, label: t('days') },
