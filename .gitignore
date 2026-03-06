@@ -43,4 +43,15 @@ next-env.d.ts
 # clerk configuration (can include secrets)
 /.clerk/
 
-.vercel
+# MCP config (may contain API keys)
+.mcp.json
+
+# Claude/agent tooling
+.agent/
+.agents/
+.claude/
+.playwright-mcp/
+skills-lock.json
+
+# Reference screenshots
+tst-*.png
