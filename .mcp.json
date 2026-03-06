@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "supabase": {
+      "type": "http",
+      "url": "https://mcp.supabase.com/mcp?project_ref=hkdgwrigcsxmevtedyjb"
+    },
+    "nano-banana": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@aeven/nanobanana-mcp@latest"],
+      "env": {
+        "GEMINI_API_KEY": "AIzaSyCX0iSMlJ4J4BfKqFHrLUZ86k0AabUC6bI"
+      }
+    }
+  }
+}

@@ -1,0 +1,1 @@
+ALTER TABLE teams ADD COLUMN is_revealed BOOLEAN NOT NULL DEFAULT false;
