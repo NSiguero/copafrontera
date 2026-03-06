@@ -41,7 +41,8 @@
     },
     "nextMatches": {
       "title": "Upcoming Matches",
-      "noMatches": "No matches scheduled"
+      "noMatches": "No matches scheduled",
+      "viewAll": "View full calendar"
     },
     "sponsors": {
       "title": "Sponsors"

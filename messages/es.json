@@ -41,7 +41,8 @@
     },
     "nextMatches": {
       "title": "Próximos Partidos",
-      "noMatches": "No hay partidos programados"
+      "noMatches": "No hay partidos programados",
+      "viewAll": "Ver calendario completo"
     },
     "sponsors": {
       "title": "Patrocinadores"

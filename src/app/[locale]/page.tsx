@@ -154,20 +154,26 @@ export default async function HomePage({
           ═══════════════════════════════════════ */}
       <section className="relative py-20">
         <div className="mx-auto max-w-7xl px-4">
-          <h2 className="section-heading font-display text-3xl font-bold text-text-primary sm:text-4xl animate-slide-left">
+          <h2 className="section-heading font-display text-3xl font-bold text-text-primary sm:text-4xl animate-slide-horizontal">
             {t("nextMatches.title")}
           </h2>
 
           <div className="mt-10">
-            {/* Empty state */}
-            <div className="empty-state animate-fade-in delay-200">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="currentColor" className="h-16 w-16 text-text-muted/30 mb-4">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" />
-              </svg>
-              <p className="font-display text-lg font-bold text-text-muted uppercase tracking-wider">
+            {/* Empty state — broadcast card */}
+            <div className="broadcast-card rounded-[10px] p-8 text-center">
+              <div className="text-gradient-gold font-display text-2xl font-bold uppercase tracking-wider mb-2">
+                PROXIMAMENTE
+              </div>
+              <p className="text-white/50 font-display text-sm uppercase tracking-wider">
                 {t("nextMatches.noMatches")}
               </p>
             </div>
+          </div>
+
+          <div className="mt-8 text-center">
+            <Link href="/calendario">
+              <Button variant="secondary" size="md">{t("nextMatches.viewAll")}</Button>
+            </Link>
           </div>
         </div>
       </section>
