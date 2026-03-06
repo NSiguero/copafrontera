@@ -94,24 +94,29 @@ export default async function HomePage({
       {/* ═══════════════════════════════════════
           TICKER RIBBON
           ═══════════════════════════════════════ */}
-      <div className="ticker-ribbon py-3">
-        <div className="ticker-ribbon-inner">
-          {[...Array(2)].map((_, i) => (
-            <span key={i} className="inline-flex items-center gap-8 px-4 text-white font-display text-sm font-bold uppercase tracking-widest">
-              <span>{t("ticker.text1")}</span>
-              <span className="text-white/40">&bull;</span>
-              <span>{t("ticker.text2")}</span>
-              <span className="text-white/40">&bull;</span>
-              <span>{t("ticker.text3")}</span>
-              <span className="text-white/40">&bull;</span>
-              <span>{t("ticker.text1")}</span>
-              <span className="text-white/40">&bull;</span>
-              <span>{t("ticker.text2")}</span>
-              <span className="text-white/40">&bull;</span>
-              <span>{t("ticker.text3")}</span>
-              <span className="text-white/40">&bull;</span>
-            </span>
-          ))}
+      <div className="bg-bg-dark-secondary border-y border-white/10 py-3 overflow-hidden">
+        <div className="flex items-center gap-6">
+          <div className="flex-shrink-0 bg-gold/20 text-gold px-3 py-1 font-display text-xs tracking-widest uppercase">
+            COPA FRONTERA
+          </div>
+          <div className="ticker-ribbon-inner">
+            {[...Array(2)].map((_, i) => (
+              <span key={i} className="inline-flex items-center gap-8 px-4 text-white/70 font-display text-sm font-bold uppercase tracking-widest">
+                <span>{t("ticker.text1")}</span>
+                <span className="text-gold">&bull;</span>
+                <span>{t("ticker.text2")}</span>
+                <span className="text-gold">&bull;</span>
+                <span>{t("ticker.text3")}</span>
+                <span className="text-gold">&bull;</span>
+                <span>{t("ticker.text1")}</span>
+                <span className="text-gold">&bull;</span>
+                <span>{t("ticker.text2")}</span>
+                <span className="text-gold">&bull;</span>
+                <span>{t("ticker.text3")}</span>
+                <span className="text-gold">&bull;</span>
+              </span>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -127,21 +132,17 @@ export default async function HomePage({
             {(["teams", "matches", "groups", "days"] as const).map((key, i) => (
               <div
                 key={key}
-                className="animate-reveal-up group relative text-center"
+                className="animate-reveal-up"
                 style={{ animationDelay: `${i * 120}ms` }}
               >
-                <div className="relative">
-                  <p className="stat-number text-gradient-blue">
+                <div className="broadcast-card rounded-[10px] p-6 text-center">
+                  <p className="stat-number text-gradient-gold tabular-nums">
                     {t(`stats.${key}`)}
                   </p>
-                  <p className="stat-label mt-3 text-white/40">
+                  <p className="stat-label mt-3 text-white/50 uppercase tracking-wider">
                     {t(`stats.${key}Label`)}
                   </p>
                 </div>
-                {/* Divider between stats on desktop */}
-                {i < 3 && (
-                  <div className="absolute right-0 top-1/2 hidden h-12 w-px -translate-y-1/2 bg-gradient-to-b from-transparent via-white/10 to-transparent md:block" />
-                )}
               </div>
             ))}
           </div>
