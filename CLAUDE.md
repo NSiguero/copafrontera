@@ -12,6 +12,39 @@ npm run lint     # ESLint
 
 No test framework is configured.
 
+## Pre-Push Checklist (MANDATORY)
+
+Before every `git push`, run these commands IN ORDER and verify they pass:
+
+```bash
+npm ci                # Verify lock file is in sync (same command CI uses)
+npm run lint          # Must have 0 errors (warnings OK)
+npm run build         # Must succeed with 0 errors
+```
+
+If `npm ci` fails with "lock file out of sync", run `rm -rf node_modules package-lock.json && npm install` to regenerate, then re-test all three commands.
+
+## Deployment
+
+- **Hosting:** Vercel (https://copafrontera.vercel.app)
+- **CI/CD:** GitHub Actions (`.github/workflows/deploy.yml`) — runs lint+build on push, deploys to Vercel on master
+- **Repo:** https://github.com/NSiguero/copafrontera
+- **Manual deploy:** `npx vercel --prod --yes`
+
+### Environment Variables
+
+Required in both Vercel and GitHub Secrets:
+- `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`
+- `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`, `CLERK_SECRET_KEY`, `NEXT_PUBLIC_CLERK_SIGN_IN_URL`, `NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL`
+- GitHub Actions also needs: `VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID`
+
+## Security Rules
+
+- **NEVER commit `.mcp.json`** — it may contain API keys. It is gitignored.
+- **NEVER commit `.env*` files** — they are gitignored.
+- **Check `git diff --cached` before committing** to catch accidental secret exposure.
+- Files that should NEVER be in git: `.mcp.json`, `.env*`, `.agent/`, `.agents/`, `.claude/`, `.playwright-mcp/`
+
 ## Architecture
 
 **Copa Frontera** — bilingual (ES/EN) tournament management platform for a 16-team soccer cup.
@@ -33,11 +66,9 @@ No test framework is configured.
 - **Database:** 5 tables (groups, teams, players, matches, player_match_stats) + 3 computed views (group_standings, top_scorers, top_assists). Migrations in `supabase/migrations/`.
 - **Generated types:** `src/lib/supabase/types.ts` — regenerate with Supabase CLI when schema changes.
 
-### Auth
+### Database Views
 
-- Supabase Auth with email/password. Admin role via `user_metadata.role === 'admin'`.
-- Middleware (`src/middleware.ts`) refreshes sessions and guards `/admin/*` routes.
-- Admin pages under `src/app/[locale]/(admin)/admin/`.
+The 3 computed views (`group_standings`, `top_scorers`, `top_assists`) must exist in Supabase. If missing, run the SQL from `supabase/migrations/002_computed_views.sql` in the Supabase SQL editor.
 
 ### Components
 
@@ -49,9 +80,17 @@ No test framework is configured.
 ### Styling
 
 - Tailwind v4 with `@theme inline` in `globals.css` — no tailwind.config.js.
-- Theme tokens: `--color-accent` (#2D7DD2 blue), `--color-bg-dark` (#0C1829 navy), `--color-bg-primary` (#F5F7FA light).
+- Theme tokens: `--color-accent` (#2D7DD2 blue), `--color-gold` (#D4A017 gold, scarce), `--color-bg-dark` (#0C1829 navy), `--color-bg-primary` (#F5F7FA light).
+- **Broadcast design system:** diagonal stripes (`diagonal-cut-bottom/top`), `broadcast-card`, `broadcast-tab`, `text-gradient-gold`, `scoreboard-card`, `live-dot`, `accent-stripe-gold`, `tabular-nums`.
+- Gold is 10% of accents — only for CTAs, countdown, LIVE badges, scores, PTS column. Blue is 90%.
 - Display font: Oswald (variable, condensed, uppercase). Body: Inter.
 - Path alias: `@/*` maps to `./src/*`.
+
+### Auth
+
+- **Clerk** for authentication (replaces Supabase Auth). Login page uses catch-all route: `src/app/[locale]/login/[[...rest]]/page.tsx`.
+- Middleware (`src/middleware.ts`) guards `/admin/*` routes.
+- Admin pages under `src/app/[locale]/(admin)/admin/`.
 
 ### Key Patterns
 
