@@ -92,35 +92,6 @@ export default async function HomePage({
       </section>
 
       {/* ═══════════════════════════════════════
-          TICKER RIBBON
-          ═══════════════════════════════════════ */}
-      <div className="bg-bg-dark-secondary border-y border-white/10 py-3 overflow-hidden">
-        <div className="flex items-center gap-6">
-          <div className="flex-shrink-0 bg-gold/20 text-gold px-3 py-1 font-display text-xs tracking-widest uppercase">
-            COPA FRONTERA
-          </div>
-          <div className="ticker-ribbon-inner">
-            {[...Array(2)].map((_, i) => (
-              <span key={i} className="inline-flex items-center gap-8 px-4 text-white/70 font-display text-sm font-bold uppercase tracking-widest">
-                <span>{t("ticker.text1")}</span>
-                <span className="text-gold">&bull;</span>
-                <span>{t("ticker.text2")}</span>
-                <span className="text-gold">&bull;</span>
-                <span>{t("ticker.text3")}</span>
-                <span className="text-gold">&bull;</span>
-                <span>{t("ticker.text1")}</span>
-                <span className="text-gold">&bull;</span>
-                <span>{t("ticker.text2")}</span>
-                <span className="text-gold">&bull;</span>
-                <span>{t("ticker.text3")}</span>
-                <span className="text-gold">&bull;</span>
-              </span>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* ═══════════════════════════════════════
           STATS — dark cinematic section with grain
           ═══════════════════════════════════════ */}
       <section className="grain-overlay relative bg-bg-dark py-20 overflow-hidden">

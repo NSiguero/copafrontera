@@ -20,33 +20,6 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-40">
-      {/* ── Top Ticker Bar ── */}
-      <div className="hidden md:block h-7 bg-bg-dark-secondary overflow-hidden whitespace-nowrap">
-        <div className="ticker-ribbon-inner h-full flex items-center gap-8 font-display text-xs font-semibold uppercase tracking-widest text-white/50">
-          {/* Duplicate content for seamless loop */}
-          {[0, 1].map((i) => (
-            <span key={i} className="flex items-center gap-8 px-4">
-              <span>Copa Frontera 2026</span>
-              <span className="text-gold/60">&middot;</span>
-              <span>El Paso — Ciudad Ju&aacute;rez</span>
-              <span className="text-gold/60">&middot;</span>
-              <span>16 Equipos</span>
-              <span className="text-gold/60">&middot;</span>
-              <span>4 Grupos</span>
-              <span className="text-gold/60">&middot;</span>
-              <span>Copa Frontera 2026</span>
-              <span className="text-gold/60">&middot;</span>
-              <span>El Paso — Ciudad Ju&aacute;rez</span>
-              <span className="text-gold/60">&middot;</span>
-              <span>16 Equipos</span>
-              <span className="text-gold/60">&middot;</span>
-              <span>4 Grupos</span>
-              <span className="text-gold/60">&middot;</span>
-            </span>
-          ))}
-        </div>
-      </div>
-
       {/* ── Main Nav Bar ── */}
       <div className="bg-bg-dark/95 backdrop-blur-md">
         <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4">
