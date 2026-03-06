@@ -423,6 +423,7 @@ export function MatchResultsEditor({
                             >
                               {t("edit")}
                             </Button>
+                            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                             <Link href={`/admin/resultados/${match.id}` as any}>
                               <Button size="sm" variant="ghost">
                                 {t("stats")}

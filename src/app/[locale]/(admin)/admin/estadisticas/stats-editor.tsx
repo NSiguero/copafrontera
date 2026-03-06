@@ -44,6 +44,7 @@ export function StatsEditor({ matches }: StatsEditorProps) {
 
   useEffect(() => {
     if (!selectedMatch) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- resetting derived state when selection clears
       setPlayerStats([]);
       return;
     }

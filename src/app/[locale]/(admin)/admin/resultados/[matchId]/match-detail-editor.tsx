@@ -12,6 +12,7 @@ interface MatchDetailEditorProps {
   match: MatchWithTeams;
   playersA: Player[];
   playersB: Player[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   existingStats: any;
 }
 
