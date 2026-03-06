@@ -80,7 +80,7 @@ export default async function HomePage({
                 <div className="font-display text-sm tracking-[0.2em] text-white/50 uppercase mb-4">
                   {t("hero.subtitle")}
                 </div>
-                <Countdown targetDate="2026-06-15T00:00:00" />
+                <Countdown targetDate="2026-05-08T00:00:00" />
               </div>
             </div>
 
