@@ -6,6 +6,7 @@ import { useRouter, Link } from "@/i18n/navigation";
 import {
   updateMatchScore,
   updateMatchStatus,
+  updateMatchSchedule,
 } from "@/lib/actions/matches";
 import { generateGroupMatches } from "@/lib/actions/tournament";
 import { Button } from "@/components/ui/button";
@@ -69,6 +70,8 @@ export function MatchResultsEditor({
   const [penaltyA, setPenaltyA] = useState<number | undefined>();
   const [penaltyB, setPenaltyB] = useState<number | undefined>();
   const [editStatus, setEditStatus] = useState<string>("completed");
+  const [editMatchDate, setEditMatchDate] = useState("");
+  const [editVenue, setEditVenue] = useState("");
   const [saving, setSaving] = useState(false);
   const [generating, setGenerating] = useState(false);
 
@@ -93,6 +96,12 @@ export function MatchResultsEditor({
     setPenaltyA(match.penalty_a ?? undefined);
     setPenaltyB(match.penalty_b ?? undefined);
     setEditStatus(match.status);
+    setEditMatchDate(
+      match.match_date
+        ? new Date(match.match_date).toISOString().slice(0, 16)
+        : ""
+    );
+    setEditVenue(match.venue ?? "");
   }
 
   async function handleSave(matchId: string, matchStage: string) {
@@ -113,6 +122,12 @@ export function MatchResultsEditor({
           editStatus as "scheduled" | "postponed" | "cancelled"
         );
       }
+
+      await updateMatchSchedule(
+        matchId,
+        editMatchDate ? new Date(editMatchDate).toISOString() : null,
+        editVenue || null
+      );
 
       // Update local state optimistically
       setLocalMatches((prev) =>
@@ -270,6 +285,27 @@ export function MatchResultsEditor({
                       {/* Score area */}
                       {editingId === match.id ? (
                         <div className="flex flex-col items-center gap-2">
+                          <div className="flex flex-col sm:flex-row gap-2 mb-1">
+                            <div className="flex flex-col gap-1">
+                              <label className="text-xs text-text-muted">{t("matchDate")}</label>
+                              <input
+                                type="datetime-local"
+                                value={editMatchDate}
+                                onChange={(e) => setEditMatchDate(e.target.value)}
+                                className="border border-border bg-bg-secondary rounded-[10px] px-3 py-1.5 text-sm focus:border-accent focus:outline-none"
+                              />
+                            </div>
+                            <div className="flex flex-col gap-1">
+                              <label className="text-xs text-text-muted">{t("venue")}</label>
+                              <input
+                                type="text"
+                                value={editVenue}
+                                onChange={(e) => setEditVenue(e.target.value)}
+                                placeholder="—"
+                                className="border border-border bg-bg-secondary rounded-[10px] px-3 py-1.5 text-sm focus:border-accent focus:outline-none"
+                              />
+                            </div>
+                          </div>
                           <div className="flex items-center gap-2">
                             <input
                               type="number"

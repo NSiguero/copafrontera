@@ -99,6 +99,22 @@ export async function createMatch(data: {
   revalidatePath("/[locale]/calendario", "page");
 }
 
+export async function updateMatchSchedule(
+  matchId: string,
+  matchDate: string | null,
+  venue: string | null
+) {
+  const supabase = createAdminClient();
+  const { error } = await supabase
+    .from("matches")
+    .update({ match_date: matchDate || null, venue: venue || null })
+    .eq("id", matchId);
+  if (error) throw new Error(error.message);
+  revalidatePath("/[locale]/calendario", "page");
+  revalidatePath("/[locale]", "page");
+  revalidatePath("/[locale]/admin/resultados", "page");
+}
+
 export async function updateMatchStatus(
   matchId: string,
   status: "scheduled" | "in_progress" | "completed" | "postponed" | "cancelled"
