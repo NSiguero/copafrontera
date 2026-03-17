@@ -140,6 +140,8 @@ export function MatchResultsEditor({
                 penalty_a: penaltyA ?? null,
                 penalty_b: penaltyB ?? null,
                 status: editStatus as MatchWithTeams["status"],
+                match_date: editMatchDate ? new Date(editMatchDate).toISOString() : null,
+                venue: editVenue || null,
               }
             : m
         )
@@ -284,28 +286,49 @@ export function MatchResultsEditor({
 
                       {/* Score area */}
                       {editingId === match.id ? (
-                        <div className="flex flex-col items-center gap-2">
-                          <div className="flex flex-col sm:flex-row gap-2 mb-1">
-                            <div className="flex flex-col gap-1">
-                              <label className="text-xs text-text-muted">{t("matchDate")}</label>
-                              <input
-                                type="datetime-local"
-                                value={editMatchDate}
-                                onChange={(e) => setEditMatchDate(e.target.value)}
-                                className="border border-border bg-bg-secondary rounded-[10px] px-3 py-1.5 text-sm focus:border-accent focus:outline-none"
-                              />
-                            </div>
-                            <div className="flex flex-col gap-1">
-                              <label className="text-xs text-text-muted">{t("venue")}</label>
-                              <input
-                                type="text"
-                                value={editVenue}
-                                onChange={(e) => setEditVenue(e.target.value)}
-                                placeholder="—"
-                                className="border border-border bg-bg-secondary rounded-[10px] px-3 py-1.5 text-sm focus:border-accent focus:outline-none"
-                              />
+                        <div className="flex flex-col items-center gap-3">
+                          {/* Schedule section */}
+                          <div className="w-full border-t border-border pt-3 mb-1">
+                            <div className="grid grid-cols-2 gap-3">
+                              {/* Date & Time */}
+                              <div className="col-span-2 sm:col-span-1">
+                                <label className="block text-xs font-semibold text-accent mb-2 uppercase tracking-wide">
+                                  {t("matchDate")}
+                                </label>
+                                <input
+                                  type="datetime-local"
+                                  value={editMatchDate}
+                                  onChange={(e) => setEditMatchDate(e.target.value)}
+                                  className="w-full bg-bg-secondary border border-border/60 rounded-lg px-3 py-2.5 text-sm font-mono focus:border-accent focus:ring-1 focus:ring-accent/20 focus:outline-none transition-colors"
+                                />
+                                {editMatchDate && (
+                                  <p className="text-xs text-text-muted mt-1">
+                                    {new Date(editMatchDate).toLocaleDateString(undefined, {
+                                      weekday: "short",
+                                      month: "short",
+                                      day: "numeric",
+                                      hour: "2-digit",
+                                      minute: "2-digit",
+                                    })}
+                                  </p>
+                                )}
+                              </div>
+                              {/* Venue */}
+                              <div className="col-span-2 sm:col-span-1">
+                                <label className="block text-xs font-semibold text-accent mb-2 uppercase tracking-wide">
+                                  {t("venue")}
+                                </label>
+                                <input
+                                  type="text"
+                                  value={editVenue}
+                                  onChange={(e) => setEditVenue(e.target.value)}
+                                  placeholder="Estadio..."
+                                  className="w-full bg-bg-secondary border border-border/60 rounded-lg px-3 py-2.5 text-sm placeholder-text-muted/40 focus:border-accent focus:ring-1 focus:ring-accent/20 focus:outline-none transition-colors"
+                                />
+                              </div>
                             </div>
                           </div>
+
                           <div className="flex items-center gap-2">
                             <input
                               type="number"
